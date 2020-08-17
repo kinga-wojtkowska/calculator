@@ -2,20 +2,20 @@ import sys
 import logging
 logging.basicConfig(level=logging.DEBUG, format='%(message)s')
 
-def add(a):
-    return sum(a)
+def add(a, b, *args):
+    return a + b + sum(args)
 
-def sub(a):
-    return a[0] - a[1]
+def sub(a, b):
+    return a - b
 
-def mult(a):
-    result = 1
-    for x in a: 
+def mult(a, b, *args):
+    result = a * b
+    for x in args: 
         result = result * x
     return result
 
-def div(a):
-    return a[0] / a[1]
+def div(a, b):
+    return a / b
 
 operations = {
     1: add,
@@ -33,19 +33,23 @@ op_txt = {
 
 def calculator():
     op = int(input("Podaj działanie, posługując się odpowiednią liczbą: 1 Dodawanie, 2 Odejmowanie, 3 Mnożenie, 4 Dzielenie: "))
+    args = []
     if op == 1 or op == 3:
         num_comp = int(input("Ile liczb wchodzi w skład działania?: "))
+        a = float(input("Podaj składnik nr 1: "))
+        b = float(input("Podaj składnik nr 2: "))
+        for i in range(num_comp-2):
+            c = i + 3
+            x = float(input("Podaj składnik nr %d: " % c))
+            args.append(x)
     else:
         num_comp = 2
+        a = float(input("Podaj składnik nr 1: "))
+        b = float(input("Podaj składnik nr 2: "))
     
-    list_comp = []
-    for i in range(num_comp):
-        c = i + 1
-        x = float(input("Podaj składnik nr %d: " % c))
-        list_comp.append(x)
     
-    logging.info("Wykonuję działanie: {}, dla następujących liczb: {}".format(op_txt[op], list_comp))
-    result = operations[op](list_comp)
+    logging.info("Wykonuję działanie: {}, dla następujących liczb: {}, {}, {}".format(op_txt[op], a, b, args))
+    result = operations[op](a, b, *args)
     logging.info("Wynik to: %.2f" % result)
     return result       
 
